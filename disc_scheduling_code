@@ -1,0 +1,124 @@
+def FCFS(que, initial):
+    value = 0
+    length = len(que)
+    for i in range(0, length):
+        value = value + abs(initial - que[i])
+        initial = que[i]
+    return value
+
+
+def SSTF(que, initial):
+    global answer
+    length = len(que)
+    i = 0
+    while i < length:
+        new_que = []
+        length_2 = len(que)
+        for j in range(0, length_2):
+            value = abs(initial - que[j])
+            new_que.append(value)
+        real = min(new_que)
+        answer += real
+        initial = que[new_que.index(real)]
+        que.remove(initial)
+        i += 1
+    return answer
+
+
+def Scan(que, initial, direc, ran):
+    global answer
+    if direc == "max":
+        answer = max(ran) - initial + abs(max(ran) - min(que))
+    elif direc == "min":
+        answer = abs(min(ran) - initial) + max(que) - min(ran)
+    return answer
+
+
+def Look(que, initial, direc):
+    global answer
+    if direc == "max":
+        answer = max(que) - initial + abs(max(que) - min(que))
+    elif direc == "min":
+        answer = abs(min(que) - initial) + max(que) - min(que)
+    return answer
+
+
+def C_scan(que, initial, direc, ran):
+    global answer
+    new_que = []
+    if direc == 'max':
+        answer = max(ran) - initial + max(ran) - min(ran)
+        for i in que:
+            if i < initial:
+                new_que.append(i)
+        new_que.sort()
+        answer = answer + abs(min(ran) - max(new_que))
+    elif direc == "min":
+        answer = abs(min(ran) - initial) + max(que) - min(ran)
+        for i in que:
+            if i > initial:
+                new_que.append(i)
+        new_que.sort()
+        answer = answer + abs(max(que) - min(new_que))
+    return answer
+
+
+def C_look(que, initial, direc):
+    global answer
+    new_que = []
+    if direc == "max":
+        answer = max(que) - initial + max(que) - min(que)
+        for i in que:
+            if i < initial:
+                new_que.append(i)
+        new_que.sort()
+        answer = answer + abs(min(que) - max(new_que))
+    elif direc == "min":
+        answer = abs(min(que) - initial) + max(que) - min(que)
+        for i in que:
+            if i > initial:
+                new_que.append(i)
+        new_que.sort()
+        answer = answer + max(que) - min(new_que)
+    return answer
+
+
+process = input("Enter FCFS for FirstComeFirstServe\nEnter SSTF for Shortest Seek Time First\nEnter SCAN for SCAN algo"
+                "\nEnter LOOK for LOOK\nEnter CSCAN or Enter CLOOK (ALL CAPS)\n")
+if process == "FCFS":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    answer = 0
+    result = FCFS(Que, head)
+    print(result)
+elif process == "SSTF":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    result = SSTF(Que, head)
+    print(result)
+elif process == "SCAN":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    direction = input("Enter Direction(max/min): ")
+    Range = list(map(int, input("Enter Range : ").split(" ")))
+    result = Scan(Que, head, direction, Range)
+    print(result)
+elif process == "LOOK":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    direction = input("Enter Direction(max/min): ")
+    result = Look(Que, head, direction)
+    print(result)
+elif process == "CSCAN":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    direction = input("Enter Direction(max/min): ")
+    Range = list(map(int, input("Enter Range: ").split(" ")))
+    result = C_scan(Que, head, direction, Range)
+    print(result)
+elif process == "CLOOK":
+    Que = list(map(int, input("Enter your Queue : ").split(" ")))
+    head = int(input("Head Position : "))
+    direction = input("Enter Direction(max/min): ")
+    result = C_look(Que, head, direction)
+    print(result)
